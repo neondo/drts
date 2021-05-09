@@ -24,7 +24,9 @@ import java.io.StringReader;
 public class DocumentUtil{
 
     private static final Logger LOG = LoggerFactory.getLogger(DocumentUtil.class);
+    public static void main(String[] args) {
 
+        }
     public static Document parse(String xml) {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
