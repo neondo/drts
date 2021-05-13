@@ -43,7 +43,7 @@ public class KafkaCanalProducer{
             String key = String.valueOf(messageNo);
             String data = String.format("hello KafkaProducer message %s from hubo 06291018 ", key);
             try {
-                producer.send(new ProducerRecord<>(TOPIC, data));
+                producer.send(new ProducerRecord<String, String>(TOPIC, data));
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -54,7 +54,7 @@ public class KafkaCanalProducer{
 
     public static void send(String message) {
         try {
-            producer.send(new ProducerRecord<>(TOPIC, message));
+            producer.send(new ProducerRecord<String, String>(TOPIC, message));
         } catch(Exception e) {
             e.printStackTrace();
         }
