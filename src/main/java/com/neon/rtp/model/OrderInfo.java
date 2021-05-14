@@ -8,8 +8,6 @@ import java.math.BigDecimal;
  */
 public class OrderInfo{
 
-    private Long orderId;
-
     private String orderNo;
 
     private BigDecimal realMoney;
@@ -26,12 +24,20 @@ public class OrderInfo{
 
     private Long userId;
 
-    public Long getOrderId() {
-        return orderId;
-    }
+    private String brandName;
 
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
+    @Override public String toString() {
+        return "OrderInfo{" +
+                "orderNo='" + orderNo + '\'' +
+                ", realMoney=" + realMoney +
+                ", standardMoney=" + standardMoney +
+                ", couponNo='" + couponNo + '\'' +
+                ", vin='" + vin + '\'' +
+                ", orderType='" + orderType + '\'' +
+                ", orderStatus=" + orderStatus +
+                ", userId=" + userId +
+                ", brandName='" + brandName + '\'' +
+                '}';
     }
 
     public String getOrderNo() {
@@ -96,5 +102,13 @@ public class OrderInfo{
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public String getBrandName() {
+        return brandName;
+    }
+
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
     }
 }
