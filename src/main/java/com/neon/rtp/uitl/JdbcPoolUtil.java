@@ -1,6 +1,8 @@
 package com.neon.rtp.uitl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.neon.rtp.model.OrderWide;
+import org.apache.log4j.lf5.util.StreamUtils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,6 +21,7 @@ public class JdbcPoolUtil{
 
     public static List<JSONObject> select(String sql) {
         try {
+            connection.setAutoCommit(true);
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
             List<JSONObject> j = new ArrayList<>();
@@ -31,7 +34,36 @@ public class JdbcPoolUtil{
             return j;
         } catch(SQLException throwables) {
             throwables.printStackTrace();
+        }finally {
+            try {
+                connection.close();
+            } catch(SQLException e) {
+                e.printStackTrace();
+            }
         }
         return new ArrayList<>();
+    }
+
+    public static void batchInsert(List<OrderWide> orderWideList) {
+        try {
+            String sql = getSql(orderWideList);
+            connection.setAutoCommit(true);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            int[] ints = preparedStatement.executeBatch();
+            ResultSet resultSet = preparedStatement.getResultSet();
+
+        } catch(SQLException throwables) {
+            throwables.printStackTrace();
+        }finally {
+            try {
+                connection.close();
+            } catch(SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static String getSql(List<OrderWide> orderWideList) {
+        return "";
     }
 }

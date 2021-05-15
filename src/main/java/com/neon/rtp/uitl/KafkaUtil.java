@@ -58,8 +58,7 @@ public class KafkaUtil{
     public static void saveOffset(String topic, String groupId, List<OffsetRange> offsetRanges) {
         String key = String.format(OFFSET_KEY_FORMAT, topic, groupId);
         Map<String, String> offsetMap = CollectUtil
-                .toMap(offsetRanges, os->String.valueOf(os.partition()),
-                        os->String.valueOf(os.untilOffset()));
+                .toMap(offsetRanges, os->String.valueOf(os.partition()), os->String.valueOf(os.untilOffset()));
         RedisClient.hmset(key, offsetMap);
     }
 }

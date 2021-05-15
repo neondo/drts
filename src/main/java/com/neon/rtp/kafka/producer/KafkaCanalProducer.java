@@ -53,7 +53,15 @@ public class KafkaCanalProducer{
 
     public static void send(String message) {
         try {
-            producer.send(new ProducerRecord<String, String>(TOPIC, message));
+            producer.send(new ProducerRecord<>(TOPIC, message));
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void send(String topic, String message) {
+        try {
+            producer.send(new ProducerRecord<>(topic, message));
         } catch(Exception e) {
             e.printStackTrace();
         }

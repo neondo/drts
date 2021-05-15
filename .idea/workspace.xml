@@ -2,69 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="15240158-955e-4e80-a97a-e791b03316e7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/RTP.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/dws/OrderWideApp.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/entity/Account.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/entity/AccountLog.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/entity/CarInfo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/entity/CarReport.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/entity/GoodsCategory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/entity/GoodsShop.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/entity/GoodsShopSpu.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/entity/GoodsShopSpuKeyValue.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/entity/GoodsShopSpuSpecValue.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/entity/GoodsShopSpuUser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/entity/GoodsSku.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/entity/GoodsSpec.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/entity/GoodsSpecValue.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/entity/GoodsSpu.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/entity/GoodsSpuSpec.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/entity/GpsDetail.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/entity/GpsDetailRecord.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/entity/InsurenceDetail.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/entity/InsurenceInfo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/entity/Order.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/entity/OrderDetail.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/entity/RepairRecord.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/entity/Report.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/entity/SupportBrand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/entity/User.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/entity/UserDetail.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/entity/WarrantyDetail.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/entity/WarrantyInfo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/model/OrderWide.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/uitl/CacheCallback.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/uitl/JdbcPoolUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/uitl/JedisClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/uitl/NumberUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/uitl/RedisClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/conf/jdbc.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/neon/kafka/KafkaCanalProducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/kafka/producer/KafkaCanalProducer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/neon/rtp/app/CanalApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/ods/OdsApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/neon/rtp/model/OrderInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/model/OrderInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/neon/uitl/BatchUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/uitl/BatchUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/neon/uitl/BeanUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/uitl/BeanUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/neon/uitl/Check.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/uitl/Check.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/neon/uitl/CollectUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/uitl/CollectUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/neon/uitl/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/uitl/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/neon/uitl/DateUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/uitl/DateUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/neon/uitl/Desc.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/uitl/Desc.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/neon/uitl/DocumentUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/uitl/DocumentUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/neon/uitl/FieldUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/uitl/FieldUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/neon/uitl/FileUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/uitl/FileUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/neon/uitl/HttpUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/uitl/HttpUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/neon/uitl/IFunction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/uitl/IFunction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/neon/uitl/JsonUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/uitl/JsonUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/neon/uitl/KafkaUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/uitl/KafkaUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/neon/uitl/OperateException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/uitl/OperateException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/neon/uitl/PageUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/uitl/PageUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/neon/uitl/RedisClient.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/neon/uitl/Regex.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/uitl/Regex.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/neon/uitl/SparkUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/uitl/SparkUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/neon/uitl/StringUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/uitl/StringUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/neon/uitl/ThreadPool.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/uitl/ThreadPool.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/neon/uitl/Unit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/uitl/Unit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/neon/rtp/dws/OrderWideApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/dwd/OrderWideApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/neon/rtp/kafka/producer/KafkaCanalProducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/kafka/producer/KafkaCanalProducer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/neon/rtp/uitl/JdbcPoolUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/uitl/JdbcPoolUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/neon/rtp/uitl/KafkaUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/neon/rtp/uitl/KafkaUtil.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -111,22 +54,23 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources/conf" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="E:\project\Idea\RTP" />
-      <recent name="E:\project\Idea\RTP\src\main\java\com\neon\uitl" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\project\Idea\RTP\src\main\java" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\project\Idea\RTP\src\main\resources\conf" />
+      <recent name="E:\project\Idea\RTP" />
+      <recent name="E:\project\Idea\RTP\src\main\java\com\neon\uitl" />
     </key>
   </component>
   <component name="RunAnythingCache">
@@ -204,7 +148,8 @@
       <workItem from="1620544715880" duration="3676000" />
       <workItem from="1620548572186" duration="4304000" />
       <workItem from="1620557252015" duration="12219000" />
-      <workItem from="1621000823798" duration="516000" />
+      <workItem from="1621000823798" duration="2071000" />
+      <workItem from="1621060113512" duration="2397000" />
     </task>
     <servers />
   </component>

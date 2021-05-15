@@ -1,18 +1,16 @@
-package com.neon.rtp.dws;
+package com.neon.rtp.dwd;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.neon.rtp.entity.Order;
 import com.neon.rtp.entity.OrderDetail;
+import com.neon.rtp.kafka.producer.KafkaCanalProducer;
 import com.neon.rtp.model.OrderWide;
-import com.neon.rtp.uitl.KafkaUtil;
-import com.neon.rtp.uitl.RedisClient;
+import com.neon.rtp.uitl.*;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.Optional;
-import org.apache.spark.sql.Dataset;
-import org.apache.spark.sql.Row;
-import org.apache.spark.sql.SparkSession;
 import org.apache.spark.streaming.Durations;
 import org.apache.spark.streaming.api.java.JavaDStream;
 import org.apache.spark.streaming.api.java.JavaInputDStream;
@@ -23,10 +21,7 @@ import org.apache.spark.streaming.kafka010.OffsetRange;
 import redis.clients.jedis.Jedis;
 import scala.Tuple2;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Neon
@@ -38,17 +33,24 @@ public class OrderWideApp{
             ORDER_PREVENT_REPLICATE_CACHE_KEY = "ORDER_PREVENT_REPLICATE_CACHE_KEY",
             ORDER_CACHE_KEY = "ORDER_WIDE_APP_FULL_JOIN_KEY_ORDER_TAIL_";
 
+    private final static String ODS_ORDER_TOPIC = "ODS_ORDER_TOPIC",
+            ODS_ORDER_DETAIL_TOPIC = "ODS_ORDER_DETAIL_TOPIC",
+            DWD_ORDER_WIDE_TOPIC = "DWD_ORDER_WIDE_TOPIC";
+
+    private final static String CONSUMER_GROUP = "REAL_TIME_PANEL";
+
     public static void main(String[] args) {
-        String topicOrderDetail = "topic_order_detail", topicOrder = "topicOrder", groupId = "group_rtp";
         SparkConf sparkConf = new SparkConf();
         JavaStreamingContext ssc = new JavaStreamingContext(sparkConf, Durations.seconds(5));
-        Map<TopicPartition, Long> orderOffsetMap = KafkaUtil.getOffsetMap(topicOrder, groupId);
+        Map<TopicPartition, Long> orderOffsetMap = KafkaUtil.getOffsetMap(ODS_ORDER_TOPIC, CONSUMER_GROUP);
         //获取订单流
-        JavaInputDStream<ConsumerRecord<String, String>> orderDirectStream = KafkaUtil.createDirectStream(ssc, "dwd_", "rtp_dwd", orderOffsetMap);
+        JavaInputDStream<ConsumerRecord<String, String>> orderDirectStream = KafkaUtil
+                .createDirectStream(ssc, OrderWideApp.ODS_ORDER_TOPIC, OrderWideApp.CONSUMER_GROUP, orderOffsetMap);
         //获取订单详情流
-        Map<TopicPartition, Long> orderDetailOffsetMap = KafkaUtil.getOffsetMap(topicOrderDetail, groupId);
+        Map<TopicPartition, Long> orderDetailOffsetMap = KafkaUtil.getOffsetMap(ODS_ORDER_DETAIL_TOPIC, CONSUMER_GROUP);
         JavaInputDStream<ConsumerRecord<String, String>> orderDetailDirectStream = KafkaUtil
-                .createDirectStream(ssc, topicOrderDetail, groupId, orderDetailOffsetMap);
+                .createDirectStream(ssc, OrderWideApp.ODS_ORDER_DETAIL_TOPIC, OrderWideApp.CONSUMER_GROUP,
+                        orderDetailOffsetMap);
         //读取offset
         List<OffsetRange> newOrderOffsetList = new ArrayList<>();
         JavaDStream<ConsumerRecord<String, String>> orderTransformStream = orderDirectStream.transform(rdd->{
@@ -57,11 +59,12 @@ public class OrderWideApp{
             return rdd;
         });
         List<OffsetRange> newOrderDetailOffsetList = new ArrayList<>();
-        JavaDStream<ConsumerRecord<String, String>> orderDetailTransformStream = orderDetailDirectStream.transform(rdd->{
-            OffsetRange[] offsetRanges = ((HasOffsetRanges) rdd).offsetRanges();
-            newOrderDetailOffsetList.addAll(Arrays.asList(offsetRanges));
-            return rdd;
-        });
+        JavaDStream<ConsumerRecord<String, String>> orderDetailTransformStream = orderDetailDirectStream
+                .transform(rdd->{
+                    OffsetRange[] offsetRanges = ((HasOffsetRanges) rdd).offsetRanges();
+                    newOrderDetailOffsetList.addAll(Arrays.asList(offsetRanges));
+                    return rdd;
+                });
         //开窗
         JavaDStream<ConsumerRecord<String, String>> orderWindowStream = orderTransformStream.
                 window(Durations.seconds(20), Durations.seconds(5));
@@ -118,19 +121,27 @@ public class OrderWideApp{
                     });
                     jedis.close();
                     String vinStrArr = buffer.toString().substring(1);
+                    List<JSONObject> vinBrandResultList = JdbcPoolUtil.select(
+                            String.format("SELECT brand_id,brand_name,vin FROM t_car_vin WHERE vin IN(%s)", vinStrArr));
+                    Map<String, String> vinBrandInfoMap = CollectUtil.toMap(vinBrandResultList, o->o.getString("vin"),
+                            o->o.getString("brandId") + StringUtil.line + o.getString("brandName"));
+                    orderWideList.forEach(orderWide->{
+                        String brandIdName = vinBrandInfoMap.get(orderWide.getVin());
+                        if(brandIdName != null) {
+                            String[] brandIdNameArr = brandIdName.split(StringUtil.line);
+                            orderWide.setBrandId(Long.valueOf(brandIdNameArr[0]));
+                            orderWide.setBrandName(brandIdNameArr[1]);
+                        }
+                        KafkaCanalProducer.send(DWD_ORDER_WIDE_TOPIC, JSON.toJSONString(orderWide));
+                    });
+                    //save to rds
+                    JdbcPoolUtil.batchInsert(orderWideList);
                     return orderWideList.iterator();
                 });
-        //save to rds mysql
-        orderWideStream.foreachRDD((rdd)->{
-            SparkSession sparkSession = SparkSession
-                    .builder().appName("Java Spark SQL basic example").config("spark.some.config.option", "some-value").getOrCreate();
-            Dataset<Row> load = sparkSession.read()
-                    .format("jdbc")
-                    .option("url", "jdbc:postgresql:dbserver")
-                    .option("dbtable", "schema.tablename")
-                    .option("user", "username")
-                    .option("password", "password")
-                    .load();
-        });
+        //save offset
+        orderDirectStream.foreachRDD(rdd->KafkaUtil.saveOffset(ODS_ORDER_TOPIC, CONSUMER_GROUP, newOrderOffsetList));
+        orderDirectStream
+                .foreachRDD(
+                        rdd->KafkaUtil.saveOffset(ODS_ORDER_DETAIL_TOPIC, CONSUMER_GROUP, newOrderDetailOffsetList));
     }
 }
