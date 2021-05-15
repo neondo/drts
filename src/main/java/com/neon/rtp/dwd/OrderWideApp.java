@@ -6,6 +6,8 @@ import com.neon.rtp.entity.Order;
 import com.neon.rtp.entity.OrderDetail;
 import com.neon.rtp.kafka.producer.KafkaCanalProducer;
 import com.neon.rtp.model.OrderWide;
+import com.neon.rtp.service.OrderWideService;
+import com.neon.rtp.service.impl.OrderWideServiceImpl;
 import com.neon.rtp.uitl.*;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.TopicPartition;
@@ -38,6 +40,8 @@ public class OrderWideApp{
             DWD_ORDER_WIDE_TOPIC = "DWD_ORDER_WIDE_TOPIC";
 
     private final static String CONSUMER_GROUP = "REAL_TIME_PANEL";
+
+    private static OrderWideService orderWideService = new OrderWideServiceImpl();
 
     public static void main(String[] args) {
         SparkConf sparkConf = new SparkConf();
@@ -98,42 +102,15 @@ public class OrderWideApp{
                         }
                         Order order = val._2._1.get();
                         OrderDetail orderDetail = val._2._2.get();
-                        if(order == null) {
-                            String orderStr = jedis.hget(ORDER_CACHE_KEY, orderNo);
-                            if(orderStr == null) {
-                                jedis.hset(ORDER_CACHE_KEY, orderNo, JSON.toJSONString(orderDetail));
-                                return;
-                            } else {
-                                order = JSON.parseObject(orderStr, Order.class);
-                            }
-                        } else if(orderDetail == null) {
-                            String orderStr = RedisClient.hget(ORDER_DETAIL_CACHE_KEY, orderNo);
-                            if(orderStr == null) {
-                                RedisClient.hset(ORDER_DETAIL_CACHE_KEY, orderNo, JSON.toJSONString(order));
-                                return;
-                            } else {
-                                orderDetail = JSON.parseObject(orderStr, OrderDetail.class);
-                            }
-                        }
-                        OrderWide orderWide = new OrderWide(order, orderDetail);
-                        buffer.append(",").append(orderWide.getVin());
+                        OrderWide orderWide = createOrderWide(orderNo, order, orderDetail, jedis);
+                        if(orderWide == null)
+                            return;
+                        buffer.append(",").append("'").append(orderWide.getVin()).append("'");
                         orderWideList.add(orderWide);
                     });
                     jedis.close();
                     String vinStrArr = buffer.toString().substring(1);
-                    List<JSONObject> vinBrandResultList = JdbcPoolUtil.select(
-                            String.format("SELECT brand_id,brand_name,vin FROM t_car_vin WHERE vin IN(%s)", vinStrArr));
-                    Map<String, String> vinBrandInfoMap = CollectUtil.toMap(vinBrandResultList, o->o.getString("vin"),
-                            o->o.getString("brandId") + StringUtil.line + o.getString("brandName"));
-                    orderWideList.forEach(orderWide->{
-                        String brandIdName = vinBrandInfoMap.get(orderWide.getVin());
-                        if(brandIdName != null) {
-                            String[] brandIdNameArr = brandIdName.split(StringUtil.line);
-                            orderWide.setBrandId(Long.valueOf(brandIdNameArr[0]));
-                            orderWide.setBrandName(brandIdNameArr[1]);
-                        }
-                        KafkaCanalProducer.send(DWD_ORDER_WIDE_TOPIC, JSON.toJSONString(orderWide));
-                    });
+                    wrapperBrand8sendMessage2dwd(orderWideList, vinStrArr);
                     //save to rds
                     JdbcPoolUtil.batchInsert(orderWideList);
                     return orderWideList.iterator();
@@ -143,5 +120,43 @@ public class OrderWideApp{
         orderDirectStream
                 .foreachRDD(
                         rdd->KafkaUtil.saveOffset(ODS_ORDER_DETAIL_TOPIC, CONSUMER_GROUP, newOrderDetailOffsetList));
+    }
+
+    private static void wrapperBrand8sendMessage2dwd(List<OrderWide> orderWideList, String vinStrArr) {
+        List<JSONObject> vinBrandResultList = JdbcPoolUtil.select(
+                String.format("SELECT brand_id,brand_name,vin FROM t_car_vin WHERE vin IN(%s)", vinStrArr));
+        Map<String, String> vinBrandInfoMap = CollectUtil.toMap(vinBrandResultList, o->o.getString("vin"),
+                o->o.getString("brandId") + StringUtil.line + o.getString("brandName"));
+        orderWideList.forEach(orderWide->{
+            String brandIdName = vinBrandInfoMap.get(orderWide.getVin());
+            if(brandIdName != null) {
+                String[] brandIdNameArr = brandIdName.split(StringUtil.line);
+                orderWide.setBrandId(Long.valueOf(brandIdNameArr[0]));
+                orderWide.setBrandName(brandIdNameArr[1]);
+            }
+            KafkaCanalProducer.send(DWD_ORDER_WIDE_TOPIC, JSON.toJSONString(orderWide));
+        });
+    }
+
+    private static OrderWide createOrderWide(String orderNo, Order order, OrderDetail orderDetail,
+                                             Jedis jedis) {
+        if(order == null) {
+            String orderStr = jedis.hget(ORDER_CACHE_KEY, orderNo);
+            if(orderStr == null) {
+                jedis.hset(ORDER_CACHE_KEY, orderNo, JSON.toJSONString(orderDetail));
+                return null;
+            } else {
+                order = JSON.parseObject(orderStr, Order.class);
+            }
+        } else if(orderDetail == null) {
+            String orderStr = RedisClient.hget(ORDER_DETAIL_CACHE_KEY, orderNo);
+            if(orderStr == null) {
+                RedisClient.hset(ORDER_DETAIL_CACHE_KEY, orderNo, JSON.toJSONString(order));
+                return null;
+            } else {
+                orderDetail = JSON.parseObject(orderStr, OrderDetail.class);
+            }
+        }
+        return new OrderWide(order, orderDetail);
     }
 }
