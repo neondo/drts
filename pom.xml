@@ -13,7 +13,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <scala.version>2.11.12</scala.version>
         <scala.banary.version>2.11</scala.banary.version>
-        <spark.version>2.3.0</spark.version>
+        <spark.version>2.4.8</spark.version>
         <canal.client.version>1.1.2</canal.client.version>
     </properties>
 
