@@ -34,7 +34,7 @@ public class JdbcPoolUtil{
             return j;
         } catch(SQLException throwables) {
             throwables.printStackTrace();
-        }finally {
+        } finally {
             try {
                 connection.close();
             } catch(SQLException e) {
@@ -44,17 +44,16 @@ public class JdbcPoolUtil{
         return new ArrayList<>();
     }
 
-    public static void batchInsert(List<OrderWide> orderWideList) {
+    public static <T> void batchInsert(List<T> insertList) {
         try {
-            String sql = getSql(orderWideList);
+            String sql = getSql(insertList);
             connection.setAutoCommit(true);
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             int[] ints = preparedStatement.executeBatch();
             ResultSet resultSet = preparedStatement.getResultSet();
-
         } catch(SQLException throwables) {
             throwables.printStackTrace();
-        }finally {
+        } finally {
             try {
                 connection.close();
             } catch(SQLException e) {
@@ -63,7 +62,7 @@ public class JdbcPoolUtil{
         }
     }
 
-    private static String getSql(List<OrderWide> orderWideList) {
+    private static <T> String getSql(List<T> orderWideList) {
         return "";
     }
 }

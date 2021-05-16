@@ -1,8 +1,16 @@
 package com.neon.rtp.uitl;
 
+import com.neon.rtp.model.OrderWide;
 import org.apache.spark.SparkConf;
+import org.apache.spark.sql.Dataset;
+import org.apache.spark.sql.Row;
+import org.apache.spark.sql.SaveMode;
+import org.apache.spark.sql.SparkSession;
 import org.apache.spark.streaming.Durations;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
+
+import java.util.List;
+import java.util.Properties;
 
 /**
  * @author Neon
@@ -24,5 +32,18 @@ public class SparkUtil{
         } catch(InterruptedException e) {
             throw new OperateException(e);
         }
+    }
+
+    public static <T> void clickHouseBatchInsert(List<T> list) {
+        SparkSession session = SparkSession.builder().appName("insert-clickhouse").getOrCreate();
+        T t = list.get(0);
+        String simpleName = t.getClass().getSimpleName();
+        Dataset<Row> dataFrame = session.createDataFrame(list, OrderWide.class);
+        dataFrame.write().mode(SaveMode.Append)
+                .option("batchSize", "1000")
+                .option("isolation", "NONE")
+                .option("numPartitions", "4")
+                .option("driver", "ru.yandex.clickhouse.ClickHouseDriver")
+                .jdbc("jdbc:clickhouse://neon.com/dw_www", simpleName, new Properties());
     }
 }

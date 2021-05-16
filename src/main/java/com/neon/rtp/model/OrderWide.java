@@ -17,6 +17,8 @@ public class OrderWide{
 
     private BigDecimal money;
 
+    private Long userId;
+
     private Long brandId;
 
     private Integer orderType;
@@ -26,6 +28,50 @@ public class OrderWide{
     private String vin;
 
     private String brandName;
+
+    private String cityName;
+
+    private Long cityId;
+
+    @Override public String toString() {
+        return "OrderWide{" +
+                "carNo='" + carNo + '\'' +
+                ", orderNo='" + orderNo + '\'' +
+                ", money=" + money +
+                ", userId=" + userId +
+                ", brandId=" + brandId +
+                ", orderType=" + orderType +
+                ", orderStatus=" + orderStatus +
+                ", vin='" + vin + '\'' +
+                ", brandName='" + brandName + '\'' +
+                ", cityName='" + cityName + '\'' +
+                ", cityId=" + cityId +
+                '}';
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public Long getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(Long cityId) {
+        this.cityId = cityId;
+    }
 
     public OrderWide(Order order, OrderDetail orderDetail) {
         this.orderNo = order.getOrderNo();
@@ -91,19 +137,6 @@ public class OrderWide{
 
     public String getBrandName() {
         return brandName;
-    }
-
-    @Override public String toString() {
-        return "OrderWide{" +
-                "brandId=" + brandId +
-                ", brandName='" + brandName + '\'' +
-                ", carNo='" + carNo + '\'' +
-                ", money=" + money +
-                ", orderNo='" + orderNo + '\'' +
-                ", orderStatus=" + orderStatus +
-                ", orderType=" + orderType +
-                ", vin='" + vin + '\'' +
-                '}';
     }
 }
 

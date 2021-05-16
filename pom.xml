@@ -11,9 +11,9 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <scala.version>2.12.10</scala.version>
-        <scala.banary.version>2.12</scala.banary.version>
-        <spark.version>2.4.0</spark.version>
+        <scala.version>2.11.12</scala.version>
+        <scala.banary.version>2.11</scala.banary.version>
+        <spark.version>2.3.0</spark.version>
         <canal.client.version>1.1.2</canal.client.version>
     </properties>
 
@@ -39,6 +39,18 @@
                     <groupId>io.netty</groupId>
                     <artifactId>netty-all</artifactId>
                 </exclusion>
+                <exclusion>
+                    <artifactId>logback-core</artifactId>
+                    <groupId>ch.qos.logback</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>logback-classic</artifactId>
+                    <groupId>ch.qos.logback</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>guava</artifactId>
+                    <groupId>com.google.guava</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
 
@@ -49,12 +61,24 @@
         </dependency>
 
         <!-- Spark -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>14.0.1</version>
+        </dependency>
         <!-- spark-core -->
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-core_${scala.banary.version}</artifactId>
             <version>${spark.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>guava</artifactId>
+                    <groupId>com.google.guava</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
+
         <!-- spark-streaming -->
         <dependency>
             <groupId>org.apache.spark</groupId>
@@ -78,8 +102,19 @@
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-client</artifactId>
             <version>2.6.1</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>guava</artifactId>
+                    <groupId>com.google.guava</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
-
+        <!--spark "main" java.lang.ArrayIndexOutOfBoundsException: 10582-->
+        <dependency>
+            <groupId>com.thoughtworks.paranamer</groupId>
+            <artifactId>paranamer</artifactId>
+            <version>2.8</version>
+        </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
@@ -94,18 +129,31 @@
             <groupId>ru.yandex.clickhouse</groupId>
             <artifactId>clickhouse-jdbc</artifactId>
             <version>0.2.4</version>
-        </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
-            <version>3.4.0</version>
             <exclusions>
                 <exclusion>
-                    <groupId>com.google.guava</groupId>
                     <artifactId>guava</artifactId>
+                    <groupId>com.google.guava</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
     </dependencies>
-
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.2.1</version>
+                <configuration>
+                    <attach>true</attach>
+                </configuration>
+                <!--<executions>
+                    <execution>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>-->
+            </plugin>
+        </plugins>
+    </build>
 </project>

@@ -2,9 +2,9 @@ package com.neon.rtp.uitl;
 
 import com.alibaba.fastjson.parser.ParserConfig;
 import com.alibaba.fastjson.util.TypeUtils;
-import net.sf.cglib.beans.BeanCopier;
-import net.sf.cglib.beans.BeanMap;
-import net.sf.cglib.core.Converter;
+import org.springframework.cglib.beans.BeanCopier;
+import org.springframework.cglib.beans.BeanMap;
+import org.springframework.cglib.core.Converter;
 
 import java.util.Arrays;
 import java.util.Map;

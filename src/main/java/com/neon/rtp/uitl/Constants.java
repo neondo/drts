@@ -23,4 +23,31 @@ public class Constants{
             e.printStackTrace();
         }
     }
+
+    public interface KafkaTopicName{
+
+        String ORDER_DETAIL_CACHE_KEY = "ORDER_WIDE_APP_FULL_JOIN_KEY_ORDER_TAIL_",
+                ORDER_PREVENT_REPLICATE_CACHE_KEY = "ORDER_PREVENT_REPLICATE_CACHE_KEY",
+                ORDER_CACHE_KEY = "ORDER_WIDE_APP_FULL_JOIN_KEY_ORDER_TAIL_";
+
+        String ODS_ORDER_TOPIC = "ODS_ORDER_TOPIC",
+                ODS_ORDER_DETAIL_TOPIC = "ODS_ORDER_DETAIL_TOPIC",
+                DWD_ORDER_WIDE_TOPIC = "DWD_ORDER_WIDE_TOPIC";
+    }
+
+    public interface KafkaGroupName{
+
+        String CONSUMER_GROUP = "REAL_TIME_PANEL";
+    }
+
+    public interface RedisKeyName{
+
+        String CONSUMER_GROUP = "REAL_TIME_PANEL";
+
+        String CITY_MAP = "CITY_MAP";
+
+        String ORDER_STATISTIC_ORDER_TYPE_0_1_STATUS_10001 = "ORDER_STATISTIC_ORDER_TYPE_0_1_STATUS_10001";
+
+        String ORDER_STATISTIC_ORDER_TYPE_0_1_TOTAL = "ORDER_STATISTIC_ORDER_TYPE_0_1_TOTAL";
+    }
 }
